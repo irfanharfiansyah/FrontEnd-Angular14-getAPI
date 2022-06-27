@@ -1,0 +1,43 @@
+
+  <table class="table table-bordered table-hover text-center">
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Inspection Type</th>
+        <th scope="col">Status</th>
+        <th scope="col">Comments</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of inspectionList$ | async">
+        <th scope="row">{{ item.id }}</th>
+        <td>{{ inspectionTypeMap.get(item.inspectionTypeId) }}</td>
+        <td>{{ item.status }}</td>
+        <td>{{ item.comments }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Show Inspection Types
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Inspection Types</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p *ngFor="let type of inspectionTypeList$|async">{{ type.id }} - {{ type.inspectionName }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
