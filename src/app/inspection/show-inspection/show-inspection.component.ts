@@ -22,7 +22,7 @@ export class ShowInspectionComponent implements OnInit {
     this.refreshInspectionTypesMap();
   }
   //Variable(pro)
-  modalTitle: string = "";
+  modalTitle: string = '';
   activeAddEditInspectionComponent: boolean = false;
   inspection: any;
 
@@ -31,15 +31,40 @@ export class ShowInspectionComponent implements OnInit {
       id: 0,
       status: null,
       comments: null,
-      inspectionTypeId: null
-    }
-    this.modalTitle = "Add Inspection";
+      inspectionTypeId: null,
+    };
+    this.modalTitle = 'Add Inspection';
+    this.activeAddEditInspectionComponent = true;
+  }
+  modalEdit(item: any) {
+    this.inspection = item;
+    this.modalTitle = 'Edit Inspection';
     this.activeAddEditInspectionComponent = true;
   }
 
   modalClose() {
     this.activeAddEditInspectionComponent = false;
     this.inspectionList$ = this.service.getInspectionList();
+  }
+  delete(item: any) {
+    if (confirm(`are you sure you want to delete inspection  ${item.id}`)) {
+      this.service.deleteInspection(item.id).subscribe((res) => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        if (closeModalBtn) {
+          closeModalBtn.click();
+        }
+        var showDeleteSuccess = document.getElementById('delete-success-alert');
+        if (showDeleteSuccess) {
+          showDeleteSuccess.style.display = 'block';
+        }
+        setTimeout(() => {
+          if (showDeleteSuccess) {
+            showDeleteSuccess.style.display = 'none';
+          }
+        }, 4000);
+        this.inspectionList$ = this.service.getInspectionList();
+      });
+    }
   }
   refreshInspectionTypesMap() {
     this.service.getInspectionTypeList().subscribe((data) => {
